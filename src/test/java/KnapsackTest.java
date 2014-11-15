@@ -1,6 +1,6 @@
 import com.buhtum.algo.Knapsack;
+import com.buhtum.algo.Knapsack.Item;
 import com.google.common.collect.ImmutableList;
-import org.javatuples.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.annotations.Test;
@@ -14,11 +14,11 @@ import static org.hamcrest.Matchers.is;
 public class KnapsackTest {
     private final static Logger log = LoggerFactory.getLogger(KnapsackTest.class);
 
-    public static final List<Pair<Integer, Integer>> ITEMS = ImmutableList.of(
-            Pair.with(60, 10),
-            Pair.with(100, 20),
-            Pair.with(100, 60),
-            Pair.with(120, 30));
+    public static final List<Item> ITEMS = ImmutableList.of(
+            Item.of(60, 10),
+            Item.of(100, 20),
+            Item.of(100, 60),
+            Item.of(120, 30));
     public static final int CAPACITY = 50;
     public static final int EXPECTED_MAX_VALUE = 220;
 
@@ -29,8 +29,9 @@ public class KnapsackTest {
         assertThat(naiveMaxValue, is(EXPECTED_MAX_VALUE));
     }
 
-    
+
     public void dynamic() {
+        // http://www.es.ele.tue.nl/education/5MC10/Solutions/knapsack.pdf
         final int dynamicMaxValue = Knapsack.dynamic01(ITEMS, CAPACITY);
         log.debug("Dynamic max value for {} is {}", ITEMS, dynamicMaxValue);
         assertThat(dynamicMaxValue, is(EXPECTED_MAX_VALUE));

@@ -1,81 +1,113 @@
 package com.buhtum.algo;
 
-import org.javatuples.Pair;
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
 import java.util.List;
 
-import static java.lang.Math.*;
+import static java.lang.Math.max;
 
 public class Knapsack {
     private final static Logger log = LoggerFactory.getLogger(Knapsack.class);
 
-    public static int calculateMaxValue(int capacity, List<Pair<Integer, Integer>> cakeTuples) {
-        int m[][] = new int[cakeTuples.size()][capacity];
-        for (int i = 0; i < capacity; i++) {
-            m[0][i] = 0;
-        }
-        for (int i = 1; i < cakeTuples.size(); i++) {
-            for (int j = 0; i <= capacity; j++) {
-                int weight = cakeTuples.get(i).getValue0();
-                int value = cakeTuples.get(i).getValue1();
-                if (weight <= j) {
-                    m[i][j] = max(m[i - 1][j], m[i - 1][j - weight] + value);
-                } else {
-                    m[i][j] = m[i - 1][j];
-                }
-            }
-        }
-
-        return 1;
-    }
-
     /**
      * Recursive implementation of 0-1 knapsack problem. Terrible O(2^n)
      */
-    public static int naiveRecursive01(List<Pair<Integer, Integer>> tuples, int capacity) {
-        return naiveRecursive01(tuples, capacity, tuples.size());
+    public static int naiveRecursive01(List<Item> items, int capacity) {
+        return naiveRecursive01(items, capacity, items.size());
     }
 
-    private static int naiveRecursive01(List<Pair<Integer, Integer>> tuples, int capacity, int size) {
+    private static int naiveRecursive01(List<Item> items, int capacity, int size) {
         if (capacity == 0 || size == 0) return 0;
 
         final int index = size - 1;
-        final Pair<Integer, Integer> item = tuples.get(index);
-        final int value = item.getValue0();
-        final int weight = item.getValue1();
+        final Item item = items.get(index);
 
-        if (weight > capacity) {
-            return naiveRecursive01(tuples, capacity, index);
+        if (item.getWeight() > capacity) {
+            return naiveRecursive01(items, capacity, index);
         } else {
             return max(
-                    value + naiveRecursive01(tuples, capacity - weight, index),
-                    naiveRecursive01(tuples, capacity, index));
+                    item.getValue() + naiveRecursive01(items, capacity - item.getWeight(), index),
+                    naiveRecursive01(items, capacity, index));
         }
     }
 
-    public static int dynamic01(List<Pair<Integer, Integer>> tuples, int capacity) {
+    public static int dynamic01(List<Item> tuples, int capacity) {
         final int size = tuples.size();
         int weights[][] = new int[size][capacity + 1];
+        boolean keep[][] = new boolean[size][capacity + 1];
 
         Arrays.fill(weights[0], 0);
 
         for (int i = 1; i < size; i++) {
-            final Pair<Integer, Integer> item = tuples.get(i);
-            final int value = item.getValue0();
-            final int weight = item.getValue1();
+            final Item item = tuples.get(i);
 
             for (int w = 0; w <= capacity; w++) {
-                if (weight <= w) {
-                    weights[i][w] = max(weights[i - 1][w], value + weights[i - 1][w - weight]);
+                if (item.getWeight() <= w) {
+                    int existingMax = weights[i - 1][w];
+                    int newMax = item.getValue() + weights[i - 1][w - item.getWeight()];
+                    if (existingMax < newMax) {
+                        weights[i][w] = newMax;
+                        keep[i][w] = true;
+                    } else {
+                        keep[i][w] = false;
+                        weights[i][w] = existingMax;
+                    }
                 } else {
                     weights[i][w] = weights[i - 1][w];
+                    keep[i][w] = false;
                 }
             }
         }
 
+        for (int i = size - 1, currCapacity = capacity; i >= 0; i--) {
+            if (keep[i][currCapacity]) {
+                final Item item = tuples.get(i);
+
+                log.debug("Included: " + item);
+                currCapacity -= item.getWeight();
+            }
+        }
+
         return weights[size - 1][capacity];
+    }
+
+    public static class Item {
+        private final int value;
+        private final int weight;
+
+        private Item(int value, int weight) {
+            this.value = value;
+            this.weight = weight;
+        }
+
+        public static Item of(int value, int weight) {
+            return new Item(value, weight);
+        }
+
+        public int getValue() {
+            return value;
+        }
+
+        public int getWeight() {
+            return weight;
+        }
+
+        public String toString() {
+            return "[weight: " + weight + "; value: " + value + "]";
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            return EqualsBuilder.reflectionEquals(this, o);
+        }
+
+        @Override
+        public int hashCode() {
+            return HashCodeBuilder.reflectionHashCode(this);
+        }
     }
 }
