@@ -37,50 +37,37 @@ public class Knapsack {
 
     public static int dynamic01(List<Item> tuples, int capacity) {
         final int size = tuples.size();
-        int weights[][] = new int[size + 1][capacity + 1];
+        final int values[][] = new int[size + 1][capacity + 1];
 
-        Arrays.fill(weights[0], 0);
+        Arrays.fill(values[0], 0);
 
-        for (int i = 1; i <= size; i++) {
-            final Item item = tuples.get(i - 1);
+        for (int itemIndex = 1; itemIndex <= size; itemIndex++) {
+            final Item item = tuples.get(itemIndex - 1);
 
-            for (int w = 0; w <= capacity; w++) {
-                if (item.getWeight() <= w) {
-                    int existingMax = weights[i - 1][w];
-                    int newMax = item.getValue() + weights[i - 1][w - item.getWeight()];
-                    if (existingMax < newMax) {
-                        weights[i][w] = newMax;
-                    } else {
-                        weights[i][w] = existingMax;
-                    }
+            for (int weight = 0; weight <= capacity; weight++) {
+                if (item.getWeight() <= weight) {
+                    values[itemIndex][weight] = max(
+                            item.getValue() + values[itemIndex - 1][weight - item.getWeight()],
+                            values[itemIndex - 1][weight]);
                 } else {
-                    weights[i][w] = weights[i - 1][w];
+                    values[itemIndex][weight] = values[itemIndex - 1][weight];
                 }
             }
         }
 
-        printArray(weights);
+        printArray(values);
 
-        for (int i = size, currCapacity = capacity; i > 0; i--) {
-            if (weights[i][currCapacity] != weights[i - 1][currCapacity]) {
-                final Item item = tuples.get(i - 1);
+        int remainingCapacity = capacity;
+        for (int itemIndex = size; itemIndex > 0; itemIndex--) {
+            if (values[itemIndex][remainingCapacity] != values[itemIndex - 1][remainingCapacity]) {
+                final Item item = tuples.get(itemIndex - 1);
 
-                log.debug("Picked item {}: {}", i, item);
-                currCapacity -= item.getWeight();
+                log.debug("Picked item {}: {}", itemIndex, item);
+                remainingCapacity -= item.getWeight();
             }
         }
 
-        return weights[size][capacity];
-    }
-
-    private static void printArray(int[][] arr) {
-        for (int i = 0; i < arr.length; i++) {
-            StringBuilder sb = new StringBuilder();
-            for (int j = 0; j < arr[i].length; j++) {
-                sb.append(String.format("%3d", arr[i][j])).append(" ");
-            }
-            log.debug("{}: {}", i, sb.toString());
-        }
+        return values[size][capacity];
     }
 
     public static int dynamicUnbounded(List<Item> tuples, int capacity) {
@@ -105,6 +92,16 @@ public class Knapsack {
         }
 
         return weights[capacity];
+    }
+
+    private static void printArray(int[][] arr) {
+        for (int i = 0; i < arr.length; i++) {
+            StringBuilder sb = new StringBuilder();
+            for (int j = 0; j < arr[i].length; j++) {
+                sb.append(String.format("%3d", arr[i][j])).append(" ");
+            }
+            log.debug("{}: {}", i, sb.toString());
+        }
     }
 
     public static class Item {
