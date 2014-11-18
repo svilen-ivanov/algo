@@ -71,27 +71,36 @@ public class Knapsack {
     }
 
     public static int dynamicUnbounded(List<Item> tuples, int capacity) {
-        int weights[] = new int[capacity + 1];
-        Arrays.fill(weights, 0);
+        int[] values = new int[capacity + 1];
+        int[][] countItemsPerWeight = new int[capacity + 1][tuples.size()];
+        Arrays.fill(values, 0);
 
         for (int w = 1; w <= capacity; w++) {
-            weights[w] = 0;
-            Item pickedItem = null;
-            for (final Item item : tuples) {
+            values[w] = 0;
+            for (int i = 0; i < tuples.size(); i++) {
+                Item item = tuples.get(i);
                 if (item.getWeight() <= w) {
-                    final int newValue = item.getValue() + weights[w - item.getWeight()];
-                    if (weights[w] < newValue) {
-                        weights[w] = newValue;
-                        pickedItem = item;
+                    final int newValue = item.getValue() + values[w - item.getWeight()];
+                    if (values[w] < newValue) {
+                        values[w] = newValue;
+                        final int[] items = countItemsPerWeight[w - item.getWeight()];
+                        countItemsPerWeight[w] = Arrays.copyOf(items, items.length);
+                        countItemsPerWeight[w][i]++;
                     }
                 }
             }
-            if (pickedItem != null) {
-                log.debug("Picked item: " + pickedItem);
-            }
         }
 
-        return weights[capacity];
+        log.debug("Knapsack items:");
+        log.debug("===============");
+        int[] maxCapacityItems = countItemsPerWeight[capacity];
+        for (int i = 0; i < maxCapacityItems.length; i++) {
+            int count = maxCapacityItems[i];
+            log.debug("\t{} x {} (item #{})", count, tuples.get(i), i);
+        }
+
+
+        return values[capacity];
     }
 
     private static void printArray(int[][] arr) {
