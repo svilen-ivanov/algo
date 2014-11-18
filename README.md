@@ -20,3 +20,14 @@ Running from the IDE (IntelliJ IDEA)
 ------------------------------------
 
 Right click on the test name in the `Project` pane and select `Run <test-name>`
+
+Resources
+---------
+
+Brief list of resources used to solve the problmes:
+
+1. [Knapsack problem](http://en.wikipedia.org/wiki/Knapsack_problem):
+    * http://www.es.ele.tue.nl/education/5MC10/Solutions/knapsack.pdf
+    * http://www.geeksforgeeks.org/dynamic-programming-set-10-0-1-knapsack-problem/
+    * http://en.wikipedia.org/wiki/Knapsack_problem#Unbounded_knapsack_problem
+    * https://www.interviewcake.com/question/cake-thief

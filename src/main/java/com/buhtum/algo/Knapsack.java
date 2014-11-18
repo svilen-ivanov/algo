@@ -35,6 +35,9 @@ public class Knapsack {
         }
     }
 
+    /**
+     * Dynamic programming implementation of 0-1 knapsack problem. O(nW) complexity
+     */
     public static int dynamic01(List<Item> tuples, int capacity) {
         final int size = tuples.size();
         final int values[][] = new int[size + 1][capacity + 1];
@@ -70,6 +73,9 @@ public class Knapsack {
         return values[size][capacity];
     }
 
+    /**
+     * Dynamic implementation of unbounded knapsack problem
+     */
     public static int dynamicUnbounded(List<Item> tuples, int capacity) {
         int[] values = new int[capacity + 1];
         int[][] countItemsPerWeight = new int[capacity + 1][tuples.size()];
