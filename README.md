@@ -24,7 +24,7 @@ Right click on the test name in the `Project` pane and select `Run <test-name>`
 Resources
 ---------
 
-Brief list of resources used to solve the problmes:
+Brief list of resources used to solve the problems:
 
 1. [Knapsack problem](http://en.wikipedia.org/wiki/Knapsack_problem):
     * http://www.es.ele.tue.nl/education/5MC10/Solutions/knapsack.pdf
