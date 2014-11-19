@@ -31,3 +31,8 @@ Brief list of resources used to solve the problems:
     * http://www.geeksforgeeks.org/dynamic-programming-set-10-0-1-knapsack-problem/
     * http://en.wikipedia.org/wiki/Knapsack_problem#Unbounded_knapsack_problem
     * https://www.interviewcake.com/question/cake-thief
+
+2. [Coin change problem (Integer partition)](http://en.wikipedia.org/wiki/Change-making_problem)
+    * http://www.artofproblemsolving.com/Resources/Papers/LaurendiPartitions.pdf
+    * http://www.geeksforgeeks.org/dynamic-programming-set-7-coin-change/
+    * http://www.algorithmist.com/index.php/Coin_Change
