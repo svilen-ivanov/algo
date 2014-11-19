@@ -1,6 +1,6 @@
 This is a collection of algorithm  which I implemented for training purposes.
 
-Running from the command-line (using Gradle):
+Running from the command-line (using Gradle)
 --------------------------------------------
 
     ./gradlew -Dtest.single=<test-name> cleanTest test
