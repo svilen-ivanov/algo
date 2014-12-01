@@ -33,6 +33,8 @@ Brief list of resources used to solve the problems:
     * https://www.interviewcake.com/question/cake-thief
 
 2. [Coin change problem (Integer partition)](http://en.wikipedia.org/wiki/Change-making_problem)
+    * http://www.algorithmist.com/index.php/Coin_Change
+    * http://www.ccs.neu.edu/home/jaa/CS7800.12F/Information/Handouts/dyn_prog.pdf - best description
+    * http://en.wikipedia.org/wiki/Coin_problem
     * http://www.artofproblemsolving.com/Resources/Papers/LaurendiPartitions.pdf
     * http://www.geeksforgeeks.org/dynamic-programming-set-7-coin-change/
-    * http://www.algorithmist.com/index.php/Coin_Change

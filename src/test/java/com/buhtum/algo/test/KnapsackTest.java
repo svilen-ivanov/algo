@@ -1,18 +1,17 @@
-package com.buthum.algo;
+package com.buhtum.algo.test;
 
 import com.buhtum.algo.Knapsack;
 import com.buhtum.algo.Knapsack.Item;
 import com.google.common.collect.ImmutableList;
+import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.testng.annotations.Test;
 
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
-@Test
 public class KnapsackTest {
     private final static Logger log = LoggerFactory.getLogger(KnapsackTest.class);
 
@@ -24,6 +23,7 @@ public class KnapsackTest {
     public static final int CAPACITY = 50;
     public static final int EXPECTED_MAX_VALUE = 220;
 
+    @Test
     public void naive01() {
         // http://www.geeksforgeeks.org/dynamic-programming-set-10-0-1-knapsack-problem/
         final int naiveMaxValue = Knapsack.naiveRecursive01(ITEMS, CAPACITY);
@@ -31,6 +31,7 @@ public class KnapsackTest {
         assertThat(naiveMaxValue, is(EXPECTED_MAX_VALUE));
     }
 
+    @Test
     public void dynamic01DataSet1() {
         // http://www.es.ele.tue.nl/education/5MC10/Solutions/knapsack.pdf
         final int dynamicMaxValue = Knapsack.dynamic01(ITEMS, CAPACITY);
@@ -38,6 +39,7 @@ public class KnapsackTest {
         assertThat(dynamicMaxValue, is(EXPECTED_MAX_VALUE));
     }
 
+    @Test
     public void dynamic01DataSet2() {
         // http://www.es.ele.tue.nl/education/5MC10/Solutions/knapsack.pdf
         final int dynamicMaxValue = Knapsack.dynamic01(ImmutableList.of(
@@ -50,6 +52,7 @@ public class KnapsackTest {
         assertThat(dynamicMaxValue, is(130));
     }
 
+    @Test
     public void dynamicUnbounded() {
         // http://en.wikipedia.org/wiki/Knapsack_problem#Unbounded_knapsack_problem
         final ImmutableList<Item> items = ImmutableList.of(
